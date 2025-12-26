@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/quiz
+    username: root
+    password: ryx050609
+
+jwt:
+  secret: bigzuoye-blog-secret-key
+  expire: 7200000   # 2小时（毫秒）

@@ -1,0 +1,21 @@
+<mapper namespace="org.example.bigzuoye.mapper.ArticleLikeMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO likes (article_id, user_id)
+        VALUES (#{articleId}, #{userId})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM likes
+        WHERE article_id = #{articleId}
+        AND user_id = #{userId}
+    </delete>
+
+    <select id="find" resultType="org.example.bigzuoye.entity.ArticleLike">
+        SELECT *
+        FROM likes
+        WHERE article_id = #{articleId}
+        AND user_id = #{userId}
+    </select>
+
+</mapper>

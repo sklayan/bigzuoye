@@ -1,0 +1,54 @@
+<mapper namespace="org.example.bigzuoye.mapper.ArticleMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO articles (user_id, title, content, summary)
+        VALUES (#{userId}, #{title}, #{content}, #{summary})
+    </insert>
+
+    <update id="update">
+        UPDATE articles
+        SET title = #{title},
+        content = #{content},
+        summary = #{summary}
+        WHERE id = #{id}
+        AND user_id = #{userId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM articles
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findById" resultType="org.example.bigzuoye.entity.Article">
+        SELECT *
+        FROM articles
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByUserId" resultType="org.example.bigzuoye.entity.Article">
+        SELECT *
+        FROM articles
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="searchByTitle" resultType="org.example.bigzuoye.entity.Article">
+        SELECT *
+        FROM articles
+        WHERE user_id = #{userId}
+        AND title LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+    <update id="increaseViewCount">
+        UPDATE articles SET view_count = view_count + 1 WHERE id = #{id}
+    </update>
+
+    <update id="increaseLikeCount">
+        UPDATE articles SET like_count = like_count + 1 WHERE id = #{id}
+    </update>
+
+    <update id="decreaseLikeCount">
+        UPDATE articles SET like_count = like_count - 1 WHERE id = #{id}
+    </update>
+
+</mapper>

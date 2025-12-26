@@ -1,0 +1,21 @@
+<mapper namespace="org.example.bigzuoye.mapper.TagMapper">
+
+    <select id="findByName" resultType="org.example.bigzuoye.entity.Tag">
+        SELECT *
+        FROM tags
+        WHERE user_id = #{userId}
+        AND name = #{name}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tags (user_id, name)
+        VALUES (#{userId}, #{name})
+    </insert>
+
+    <select id="findByUserId" resultType="org.example.bigzuoye.entity.Tag">
+        SELECT *
+        FROM tags
+        WHERE user_id = #{userId}
+    </select>
+
+</mapper>

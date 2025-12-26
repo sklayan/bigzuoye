@@ -1,0 +1,19 @@
+<mapper namespace="org.example.bigzuoye.mapper.CommentMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO comments (article_id, user_id, content)
+        VALUES (#{articleId}, #{userId}, #{content})
+    </insert>
+
+    <select id="findByArticleId" resultType="org.example.bigzuoye.entity.Comment">
+        SELECT *
+        FROM comments
+        WHERE article_id = #{articleId}
+        ORDER BY created_at ASC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM comments WHERE id = #{id}
+    </delete>
+
+</mapper>

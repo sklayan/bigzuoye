@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.bigzuoye.mapper.UserMapper">
+
+    <select id="findByUsername" resultType="org.example.bigzuoye.entity.User">
+        SELECT *
+        FROM users
+        WHERE username = #{username}
+    </select>
+
+    <select id="findById" resultType="org.example.bigzuoye.entity.User">
+        SELECT *
+        FROM users
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (username, password, email)
+        VALUES (#{username}, #{password}, #{email})
+    </insert>
+
+</mapper>
