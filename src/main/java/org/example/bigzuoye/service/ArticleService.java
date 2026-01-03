@@ -19,4 +19,6 @@ public interface ArticleService {
     List<Article> search(Long userId, String keyword);
 
     void increaseView(Long articleId);
+
+    public List<Article> list(String keyword, Long userId, boolean personal);
 }

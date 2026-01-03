@@ -22,27 +22,33 @@ public class JwtFilter implements HandlerInterceptor {
                              HttpServletResponse response,
                              Object handler) throws Exception {
 
+        // 1️⃣ 放行 OPTIONS（非常关键）
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
         String token = request.getHeader("Authorization");
 
-        // 1. 没有 token
         if (token == null || token.isEmpty()) {
             writeError(response, "未登录，请先登录");
             return false;
         }
 
+        // 2️⃣ 去掉 Bearer 前缀
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+
         try {
-            // 2. 解析 token
             Long userId = jwtUtil.getUserIdFromToken(token);
-
-            // 3. 保存当前用户
             UserContext.setUserId(userId);
-
             return true;
         } catch (JwtException e) {
             writeError(response, "登录已过期或无效");
             return false;
         }
     }
+
 
     @Override
     public void afterCompletion(HttpServletRequest request,

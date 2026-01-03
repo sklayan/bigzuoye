@@ -1,10 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/quiz
+    url: jdbc:mysql://localhost:3306/blog
     username: root
     password: ryx050609
 
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
 jwt:
-  secret: bigzuoye-blog-secret-key
+  secret: bigzuoye-blog-secret-key12345678901234567890
   expire: 7200000   # 2小时（毫秒）

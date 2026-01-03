@@ -24,4 +24,9 @@ public class Article {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private Integer commentCount;
+
+    private String username;
+
 }

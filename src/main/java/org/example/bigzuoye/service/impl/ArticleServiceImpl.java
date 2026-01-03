@@ -56,4 +56,19 @@ public class ArticleServiceImpl implements ArticleService {
     public void increaseView(Long articleId) {
         articleMapper.increaseViewCount(articleId);
     }
+
+    public List<Article> list(String keyword, Long userId, boolean personal) {
+        if (personal) {
+            if (keyword == null || keyword.isBlank()) {
+                return articleMapper.findByUserId(userId);
+            }
+            return articleMapper.searchByTitle(userId, keyword);
+        } else {
+            if (keyword == null || keyword.isBlank()) {
+                return articleMapper.findAll();
+            }
+            return articleMapper.searchAllByTitle(keyword);
+        }
+    }
+
 }

@@ -2,10 +2,12 @@ package org.example.bigzuoye.controller;
 
 import org.example.bigzuoye.common.Result;
 import org.example.bigzuoye.entity.Comment;
+import org.example.bigzuoye.security.UserContext;
 import org.example.bigzuoye.service.CommentService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/comment")
@@ -14,23 +16,22 @@ public class CommentController {
     @Resource
     private CommentService commentService;
 
-    // 发表评论
     @PostMapping
     public Result<?> add(@RequestBody Comment comment) {
-        commentService.addComment(comment);
+        comment.setUserId(UserContext.getUserId());
+        commentService.add(comment);
         return Result.success();
     }
 
-    // 获取文章评论
     @GetMapping("/article/{articleId}")
     public Result<?> listByArticle(@PathVariable Long articleId) {
-        return Result.success(commentService.listByArticle(articleId));
+        List<Comment> list = commentService.listByArticle(articleId);
+        return Result.success(list);
     }
 
-    // 删除评论
     @DeleteMapping("/{id}")
     public Result<?> delete(@PathVariable Long id) {
-        commentService.delete(id);
+        commentService.delete(id, UserContext.getUserId());
         return Result.success();
     }
 }

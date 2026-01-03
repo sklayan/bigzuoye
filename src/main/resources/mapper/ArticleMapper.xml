@@ -1,3 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="org.example.bigzuoye.mapper.ArticleMapper">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
@@ -8,10 +13,10 @@
     <update id="update">
         UPDATE articles
         SET title = #{title},
-        content = #{content},
-        summary = #{summary}
+            content = #{content},
+            summary = #{summary}
         WHERE id = #{id}
-        AND user_id = #{userId}
+          AND user_id = #{userId}
     </update>
 
     <delete id="deleteById">
@@ -20,24 +25,145 @@
     </delete>
 
     <select id="findById" resultType="org.example.bigzuoye.entity.Article">
-        SELECT *
+        SELECT
+            id,
+            user_id AS userId,
+            title,
+            content,
+            summary,
+            view_count AS viewCount,
+            like_count AS likeCount,
+            created_at AS createdAt,
+            updated_at AS updatedAt
         FROM articles
         WHERE id = #{id}
     </select>
 
+
     <select id="findByUserId" resultType="org.example.bigzuoye.entity.Article">
-        SELECT *
-        FROM articles
-        WHERE user_id = #{userId}
-        ORDER BY created_at DESC
+        SELECT
+            a.id,
+            a.user_id AS userId,
+            u.username AS username,
+            a.title,
+            a.content,
+            a.summary,
+            a.view_count AS viewCount,
+
+            (
+                SELECT COUNT(*)
+                FROM likes l
+                WHERE l.article_id = a.id
+            ) AS likeCount,
+
+            (
+                SELECT COUNT(*)
+                FROM comments c
+                WHERE c.article_id = a.id
+            ) AS commentCount,
+
+            a.created_at AS createdAt,
+            a.updated_at AS updatedAt
+        FROM articles a
+                 LEFT JOIN users u ON a.user_id = u.id
+        WHERE a.user_id = #{userId}
+        ORDER BY a.created_at DESC
     </select>
 
+
     <select id="searchByTitle" resultType="org.example.bigzuoye.entity.Article">
-        SELECT *
-        FROM articles
-        WHERE user_id = #{userId}
-        AND title LIKE CONCAT('%', #{keyword}, '%')
+        SELECT
+            a.id,
+            a.user_id AS userId,
+            u.username AS username,
+            a.title,
+            a.content,
+            a.summary,
+            a.view_count AS viewCount,
+
+            (
+                SELECT COUNT(*)
+                FROM likes l
+                WHERE l.article_id = a.id
+            ) AS likeCount,
+
+            (
+                SELECT COUNT(*)
+                FROM comments c
+                WHERE c.article_id = a.id
+            ) AS commentCount,
+
+            a.created_at AS createdAt,
+            a.updated_at AS updatedAt
+        FROM articles a
+                 LEFT JOIN users u ON a.user_id = u.id
+        WHERE a.user_id = #{userId}
+          AND a.title LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY a.created_at DESC
     </select>
+
+
+    <select id="findAll" resultType="org.example.bigzuoye.entity.Article">
+        SELECT
+            a.id,
+            a.user_id AS userId,
+            u.username AS username,
+            a.title,
+            a.content,
+            a.summary,
+            a.view_count AS viewCount,
+
+            (
+                SELECT COUNT(*)
+                FROM likes l
+                WHERE l.article_id = a.id
+            ) AS likeCount,
+
+            (
+                SELECT COUNT(*)
+                FROM comments c
+                WHERE c.article_id = a.id
+            ) AS commentCount,
+
+            a.created_at AS createdAt,
+            a.updated_at AS updatedAt
+        FROM articles a
+                 LEFT JOIN users u ON a.user_id = u.id
+        ORDER BY a.created_at DESC
+    </select>
+
+
+    <select id="searchAllByTitle" resultType="org.example.bigzuoye.entity.Article">
+        SELECT
+            a.id,
+            a.user_id AS userId,
+            u.username AS username,
+            a.title,
+            a.content,
+            a.summary,
+            a.view_count AS viewCount,
+
+            (
+                SELECT COUNT(*)
+                FROM likes l
+                WHERE l.article_id = a.id
+            ) AS likeCount,
+
+            (
+                SELECT COUNT(*)
+                FROM comments c
+                WHERE c.article_id = a.id
+            ) AS commentCount,
+
+            a.created_at AS createdAt,
+            a.updated_at AS updatedAt
+        FROM articles a
+                 LEFT JOIN users u ON a.user_id = u.id
+        WHERE a.title LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY a.created_at DESC
+    </select>
+
+
 
     <update id="increaseViewCount">
         UPDATE articles SET view_count = view_count + 1 WHERE id = #{id}
